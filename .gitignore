@@ -6,8 +6,10 @@
 .pnp.js
 
 # testing
-/coverage
 
+/coverage
+# api keys
+/.env
 # production
 /build
 
