@@ -5,6 +5,7 @@ const LoginComponent = (props) => {
   const emailRef = useRef(null);
   const passwordRef = useRef(null);
 
+  console.log("test");
   const register = (e) => {
     console.log("register");
     e.preventDefault();
