@@ -1,19 +1,34 @@
-import { useRef, useState } from "react";
+import React, { useState, useRef } from "react";
+
 import { auth } from "../firebase";
-import SignUpComponent from "./SignUpComponent";
+import LoginComponent from "./LoginComponent";
+import axios from "axios";
+import alertify from "alertifyjs";
 
-const LoginComponent = (props) => {
-  const [signInLog, setSignInLog] = useState(false);
-
+const SignUpComponent = () => {
+  const [signIn, setSignIn] = useState(false);
+  const [user, setUser] = useState({
+    id: "",
+    email: "",
+    password: "",
+  });
   const emailRef = useRef(null);
   const passwordRef = useRef(null);
 
-  const signIn = (e) => {
-    // console.log("signIn");
-    e.preventDefault();
+  const pStyle = {
+    backgroundImage: `url(https://images.unsplash.com/photo-1471970471555-19d4b113e9ed?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=580&q=80)`,
+    backgroundPosition: "center",
+    backgroundSize: "cover",
+    backgroundRepeat: "no-repeat",
+    width: "100%",
+    minHeight: "100vh",
+  };
+
+  const register = () => {
+    // console.log("register");
 
     auth
-      .signInWithEmailAndPassword(
+      .createUserWithEmailAndPassword(
         emailRef.current.value,
         passwordRef.current.value
       )
@@ -25,12 +40,29 @@ const LoginComponent = (props) => {
       });
   };
 
+  const handleOnChange = (e) => {
+    e.preventDefault();
+    setUser({ ...user, [e.target.name]: e.target.value });
+  };
+
+  const saveUserDB = async () => {
+    await axios
+      .post("http://localhost:4545/saveUser", user)
+      .then((response) => {
+        setUser(response.data);
+        alertify.success("you have been created your account successfully");
+      })
+      .catch((err) => {
+        console.log(err);
+        alertify.error("Failed to create new accout");
+      });
+  };
   return (
-    <div>
-      {signInLog ? (
-        <SignUpComponent />
+    <div style={{ minHeight: "100vh" }}>
+      {signIn ? (
+        <LoginComponent value={pStyle} />
       ) : (
-        <section className="vh-100vh" {...props.value.backgroundColor}>
+        <section className="vh-100vh">
           <div className="container py-5 h-100">
             <div className="row d-flex justify-content-center align-items-center h-100">
               <div className="col-12 col-md-8 col-lg-6 col-xl-5">
@@ -39,11 +71,13 @@ const LoginComponent = (props) => {
                   style={{ borderRadius: "1rem" }}
                 >
                   <div className="card-body p-5 text-center">
-                    <h3 className="mb-5">Sign in </h3>
+                    <h3 className="mb-5">Create Account</h3>
 
                     <div className="form-outline mb-4">
                       <input
                         ref={emailRef}
+                        onChange={handleOnChange}
+                        name="email"
                         type="email"
                         id="typeEmailX-2"
                         className="form-control form-control-lg"
@@ -57,57 +91,32 @@ const LoginComponent = (props) => {
                       <input
                         ref={passwordRef}
                         type="password"
+                        name="password"
                         id="typePasswordX-2"
                         className="form-control form-control-lg"
+                        onChange={handleOnChange}
                       />
                       <label className="form-label" htmlFor="typePasswordX-2">
                         Password
                       </label>
                     </div>
 
-                    <button
-                      className="btn btn-primary btn-lg btn-block"
-                      type="submit"
-                      onClick={signIn}
-                    >
-                      Login
-                    </button>
-
                     <hr className="my-4" />
 
                     <button
-                      className="btn btn-lg btn-block btn-primary d-flex justify-content-center"
+                      className="btn btn-lg btn-block btn-primary "
+                      type="submit"
                       style={{
                         backgroundColor: "#dd4b39",
                       }}
+                      onClick={() => {
+                        register();
+                        setSignIn(true);
+                        saveUserDB();
+                      }}
                     >
-                      <span>
-                        New to E-Shelves?
-                        {/* <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="16"
-                        height="16"
-                        fill="currentColor"
-                        className="bi bi-arrow-right"
-                        viewBox="0 0 16 16"
-                      >
-                        <path
-                          fillRule="evenodd"
-                          d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"
-                        />
-                      </svg> */}
-                      </span>
-                      <span
-                        onClick={() => {
-                          setSignInLog(true);
-                        }}
-                      >
-                        <> &nbsp;</>
-
-                        <u className="font-weight-bold">SiGN UP NOW!</u>
-                      </span>
+                      Create Account
                     </button>
-                    <hr className="my-4" />
                   </div>
                 </div>
               </div>
@@ -119,4 +128,4 @@ const LoginComponent = (props) => {
   );
 };
 
-export default LoginComponent;
+export default SignUpComponent;

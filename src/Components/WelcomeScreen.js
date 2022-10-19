@@ -42,23 +42,40 @@ const WelcomeScreen = () => {
                     />
                     <div className="carousel-caption">
                       <div
-                        style={{ height: "60%", width: "50%", color: "beige" }}
+                        style={{
+                          height: "60%",
+                          width: "50%",
+                          color: "beige",
+                          marginBottom: "200px",
+                        }}
                       >
                         <p className="text-justify">
-                          <span> E-Shelves </span>
+                          <span style={{ fontWeight: "bold", color: "Brown" }}>
+                            E-Shelves{" "}
+                          </span>
                           has made it easy to find any book at the best price
                           and you'll find just the right book. E-Shelves
                           searches the inventories of over 100,000 booksellers
                           worldwide, accessing millions of books in just one
                           simple step. You can simply sing up! search books and
-                          keep notes of your chioce. Don't wait. Get started.
-                          Swipe right...
+                          keep notes of your chioce. Don't wait.
+                          <span style={{ fontWeight: "bold", color: "Brown" }}>
+                            &nbsp;
+                            <button
+                              onClick={() => {
+                                setSignIn(true);
+                              }}
+                              className="btn btn-warning"
+                            >
+                              Get Started
+                            </button>
+                          </span>
                         </p>
                       </div>
                     </div>
                   </div>
 
-                  <div className="carousel-item">
+                  {/* <div className="carousel-item">
                     <img
                       style={{ height: "100%" }}
                       className="d-block w-100"
@@ -75,9 +92,9 @@ const WelcomeScreen = () => {
                         Get Started
                       </button>
                     </div>
-                  </div>
+                  </div> */}
                 </div>
-                <a
+                {/* <a
                   className="carousel-control-prev"
                   href="#carouselExampleControls"
                   role="button"
@@ -88,8 +105,8 @@ const WelcomeScreen = () => {
                     aria-hidden="true"
                   ></span>
                   <span className="sr-only">Previous</span>
-                </a>
-                <a
+                </a> */}
+                {/* <a
                   className="carousel-control-next"
                   href="#carouselExampleControls"
                   role="button"
@@ -100,7 +117,7 @@ const WelcomeScreen = () => {
                     aria-hidden="true"
                   ></span>
                   <span className="sr-only">Next</span>
-                </a>
+                </a> */}
               </div>
             </div>
           </>
